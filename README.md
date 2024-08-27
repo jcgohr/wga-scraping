@@ -1,5 +1,5 @@
 # wga-scraping
-A repository for scraping the Web Gallery of Art.
+A repository for scraping the  [Web Gallery of Art](https://www.wga.hu/).
 ## Installation
 Firstly install all dependencies
 ```

@@ -17,6 +17,7 @@ class WgaMetadata():
         with open(self.metadataPath,'w',encoding='utf-8') as metadataFile:
             metadataFile.write(json.dumps(self.metadata))
 
+# Testing
 if __name__=="__main__":
     metadata=WgaMetadata('metadata.json')
     metadata.writeMetadata('q',{'b':'a'})

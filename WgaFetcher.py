@@ -32,11 +32,13 @@ class WgaFetcher():
         
         return BeautifulSoup(response.content)
     
-    def fetchImage(self,link,downloadPath):
+    def fetchImage(self,link,downloadPath,imageQuality:bool):
         # Bypasses the start of the link (https://www.wga.hu/html) and erases the ".html" extension
         pagePath=link[24:-5]
-        # We assume every image is a .jpg file but error handling is included
-        response=urllib.request.urlretrieve(f"https://www.wga.hu/detail/{pagePath}.jpg",downloadPath)
+        # "art" means a higher resolution image and "detail" is a lower res image
+        quality="art" if imageQuality else "detail"
+        # Retrieve image and assume every image is a .jpg file
+        response=urllib.request.urlretrieve(f"https://www.wga.hu/{quality}/{pagePath}.jpg",downloadPath)
         # Check if image exists, raise exception if it doesn't
         if not os.path.exists(downloadPath):
             raise urllib.request.HTTPError(msg=f"No image downloaded for {link}")
@@ -53,7 +55,7 @@ class WgaFetcher():
             raise Exception(f"More than one comment found, You should visit {link} and inspect the page")
         return tds[0].text
     
-    def processLink(self,link,artistName:str,artworkName:str)->tuple[str,str]:
+    def processLink(self,link,artistName:str,artworkName:str,imageQuality:bool)->tuple[str,str]:
         """
         runs fetchImage and extractDescription with a single call
         """
@@ -64,7 +66,7 @@ class WgaFetcher():
             os.mkdir(artistPath)
         artPath=artistPath+sanitizedArtworkName+'.jpg'
         if not os.path.exists(artPath):
-            self.fetchImage(link,artPath)
+            self.fetchImage(link,artPath,imageQuality)
         else:
             # This solution is only effective for pieces with the same title, It will re-download exisiting pieces
             # Another method of detecting previously downloaded images is required
@@ -73,7 +75,7 @@ class WgaFetcher():
             while os.path.exists(artPath):
                 duplicateNameCounter+=1
                 artPath=artistPath+sanitizedArtworkName+f' ({duplicateNameCounter})'+'.jpg'
-            self.fetchImage(link,artPath)
+            self.fetchImage(link,artPath,imageQuality)
             
         page=self.requestPage(link)
         description=self.extractDescription(page,link)

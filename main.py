@@ -8,7 +8,7 @@ argparser=argparse.ArgumentParser(
             description='Collects artworks from the Web Gallery of Art',
             )
 # Add optional quality param, defaults to high quality
-argparser.add_argument('-low_quality',type=bool,action='store_false',help='Downloads a lower resolution version of the image, defaults to high quality')
+argparser.add_argument('-low_quality',action='store_false',help='Downloads a lower resolution version of the image, defaults to high quality')
 # If we are providing a start index we are not gathering from an individual link
 arggroup=argparser.add_mutually_exclusive_group()
 arggroup.add_argument('-l','--link',type=str,required=False,help='Scrape a singular link from https://www.wga.hu (e.g https://www.wga.hu/html/a/aachen/j_couple.html)')

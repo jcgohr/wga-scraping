@@ -20,9 +20,8 @@ usage: WgaScraper [-h] [-low_quality] [-l LINK | -s START]
 Collects artworks from the Web Gallery of Art
 
 options:
-  -h, --help            show this help message and exit
-  -low_quality          Downloads a lower resolution version of the image, defaults to high quality
-  -l LINK, --link LINK  Scrape a singular link from https://www.wga.hu (e.g https://www.wga.hu/html/a/aachen/j_couple.html)
-  -s START, --start START
-                        Starts the scraping process at a certain index in the catalog
+  -h, --help              show this help message and exit
+  -low_quality            Downloads a lower resolution version of the image, defaults to high quality
+  -l LINK, --link LINK    Scrape a singular link from https://www.wga.hu (e.g https://www.wga.hu/html/a/aachen/j_couple.html)
+  -s START, --start START Starts the scraping process at a certain index in the catalog
 ```

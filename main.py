@@ -48,7 +48,9 @@ if args.link:
             parser.catalog[index][WgaTsv.title.value],
             args.low_quality,
         )
-        fetcher.metadataObject.writeMetadata(path,{
+        # Not tested
+        fetcher.metadataObject.writeMetadata(index,{
+            "file_path":path,
             "url":parser.catalog[index][WgaTsv.url.value],
             "title":parser.catalog[index][WgaTsv.title.value],
             "author":parser.catalog[index][WgaTsv.author.value],
@@ -69,14 +71,15 @@ else:
     if args.start>len(parser.catalog):
         raise IndexError(f"The index you provided is out of range, It must be greater than 0 and less than {len(parser.catalog)}")
     # Get the data
-    for entry in parser.catalog[args.start:]:
+    for idx,entry in enumerate(parser.catalog[args.start:]):
         description,path=fetcher.processLink(
             entry[WgaTsv.url.value],
             entry[WgaTsv.author.value],
             entry[WgaTsv.title.value],
             args.low_quality,
         )
-        fetcher.metadataObject.writeMetadata(path,{
+        fetcher.metadataObject.writeMetadata(idx,{
+            "file_path":path,
             "url":entry[WgaTsv.url.value],
             "title":entry[WgaTsv.title.value],
             "author":entry[WgaTsv.author.value],

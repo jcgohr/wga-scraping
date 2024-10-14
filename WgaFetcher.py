@@ -47,13 +47,19 @@ class WgaFetcher():
     def extractDescription(self,soup:BeautifulSoup,link:str)-> str | None:
         # Filter <td>'s for a string that signifies the start of a description
         tds=[td for td in soup.find_all('td') if " Comment Start " in td.contents]
+        td = tds[0]
+        tables = td.find_all('table')
+        for table in tables:
+            table.decompose()
+
         lengthTds=len(tds)
         if lengthTds==0:
             print(f"No description found for {link}")
             return None
+        elif lengthTds==1:
+            return td.text
         elif lengthTds>1:
             raise Exception(f"More than one comment found, You should visit {link} and inspect the page")
-        return tds[0].text
     
     def processLink(self,link,artistName:str,artworkName:str,imageQuality:bool)->tuple[str,str]:
         """

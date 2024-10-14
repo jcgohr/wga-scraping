@@ -48,8 +48,8 @@ class WgaFetcher():
         # Filter <td>'s for a string that signifies the start of a description
         tds=[td for td in soup.find_all('td') if " Comment Start " in td.contents]
         td = tds[0]
-        table = td.find('table')
-        if table: # Remove tables
+        tables = td.find_all('table')
+        for table in tables:
             table.decompose()
 
         lengthTds=len(tds)

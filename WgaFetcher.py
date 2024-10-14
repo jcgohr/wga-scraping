@@ -63,7 +63,8 @@ class WgaFetcher():
         if description:
             return ' '.join(description)
         else:
-            raise Exception(f"No valid description found for {link}")
+            print(f"No valid description found for {link}")
+            return None
     
     def processLink(self,link,artistName:str,artworkName:str,imageQuality:bool)->tuple[str,str]:
         """

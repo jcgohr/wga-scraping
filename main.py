@@ -1,5 +1,6 @@
 from WgaParser import WgaParser
 from WgaTsv import WgaTsv
+from tqdm import tqdm
 from WgaFetcher import WgaFetcher,IMAGE_DIR
 import argparse
 
@@ -71,7 +72,7 @@ else:
     if args.start>len(parser.catalog):
         raise IndexError(f"The index you provided is out of range, It must be greater than 0 and less than {len(parser.catalog)}")
     # Get the data
-    for idx,entry in enumerate(parser.catalog[args.start:]):
+    for idx,entry in enumerate(tqdm(parser.catalog[args.start:],desc="Downloading artworks")):
         description,path=fetcher.processLink(
             entry[WgaTsv.url.value],
             entry[WgaTsv.author.value],

@@ -53,7 +53,17 @@ class WgaFetcher():
             return None
         elif lengthTds>1:
             raise Exception(f"More than one comment found, You should visit {link} and inspect the page")
-        return tds[0].text
+        
+        td = tds[0]
+        description = []
+        # Get text only
+        for p in td.find_all('p'):
+            if not p.find_all('table', recursive=False):
+                description.append(p.get_text())
+        if description:
+            return ' '.join(description)
+        else:
+            raise Exception(f"No valid description found for {link}")
     
     def processLink(self,link,artistName:str,artworkName:str,imageQuality:bool)->tuple[str,str]:
         """

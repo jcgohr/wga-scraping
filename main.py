@@ -50,7 +50,7 @@ if args.link:
             args.low_quality,
         )
         # Not tested
-        fetcher.metadataObject.writeMetadata(index,{
+        fetcher.metadataObject.writeMetadata(str(index),{
             "file_path":path,
             "url":parser.catalog[index][WgaTsv.url.value],
             "title":parser.catalog[index][WgaTsv.title.value],
@@ -79,7 +79,7 @@ else:
             entry[WgaTsv.title.value],
             args.low_quality,
         )
-        fetcher.metadataObject.writeMetadata(idx,{
+        fetcher.metadataObject.writeMetadata(str(idx),{
             "file_path":path,
             "url":entry[WgaTsv.url.value],
             "title":entry[WgaTsv.title.value],

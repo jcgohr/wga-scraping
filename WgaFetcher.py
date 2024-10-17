@@ -1,6 +1,7 @@
 import requests
 import urllib.request
 import os
+import re
 from time import sleep
 from bs4 import BeautifulSoup
 from pathvalidate import sanitize_filename
@@ -57,7 +58,7 @@ class WgaFetcher():
             print(f"No description found for {link}")
             return None
         elif lengthTds==1:
-            return td.text
+            return re.sub(r'[\r\n]|\\u[0-9A-Fa-f]{4}|\\\"', ' ', td.text).strip()
         elif lengthTds>1:
             raise Exception(f"More than one comment found, You should visit {link} and inspect the page")
     

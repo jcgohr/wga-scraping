@@ -31,7 +31,7 @@ class WgaFetcher():
         if response.content==None:
             raise ValueError("No content contained in response")
         
-        return BeautifulSoup(response.content)
+        return BeautifulSoup(response.content,features="lxml")
     
     def fetchImage(self,link,downloadPath,imageQuality:bool):
         # Bypasses the start of the link (https://www.wga.hu/html) and erases the ".html" extension
@@ -48,16 +48,17 @@ class WgaFetcher():
     def extractDescription(self,soup:BeautifulSoup,link:str)-> str | None:
         # Filter <td>'s for a string that signifies the start of a description
         tds=[td for td in soup.find_all('td') if " Comment Start " in td.contents]
+        lengthTds=len(tds)
+        if lengthTds==0:
+            print(f"No description found for {link}")
+            return None
+        
         td = tds[0]
         tables = td.find_all('table')
         for table in tables:
             table.decompose()
 
-        lengthTds=len(tds)
-        if lengthTds==0:
-            print(f"No description found for {link}")
-            return None
-        elif lengthTds==1:
+        if lengthTds==1:
             return re.sub(r'[\r\n]|\\u[0-9A-Fa-f]{4}|\\\"', ' ', td.text).strip()
         elif lengthTds>1:
             raise Exception(f"More than one comment found, You should visit {link} and inspect the page")

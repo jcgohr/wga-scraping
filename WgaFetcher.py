@@ -31,7 +31,7 @@ class WgaFetcher():
         if response.content==None:
             raise ValueError("No content contained in response")
         
-        return BeautifulSoup(response.content,features="lxml")
+        return BeautifulSoup(response.content,features="html.parser")
     
     def fetchImage(self,link,downloadPath,imageQuality:bool):
         # Bypasses the start of the link (https://www.wga.hu/html) and erases the ".html" extension

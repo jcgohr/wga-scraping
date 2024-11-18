@@ -6,10 +6,12 @@
 import os
 
 
-IMG_DIR="./images"
+IMG_DIR="../../images"
 for directory in os.listdir(IMG_DIR):
     images=os.listdir(os.path.join(IMG_DIR,directory))
     lower_case_images=[image.lower() for image in images]
+    # A dictionary used to keep track of multiple uncased duplicates
+    duplicates_dict={}
     for i in range(len(lower_case_images)):
         image=lower_case_images.pop(0)
         # This if statement checks that after popping the head of the list its still in the list
@@ -17,9 +19,14 @@ for directory in os.listdir(IMG_DIR):
             dupe_idx=lower_case_images.index(image)
             image_path=os.path.join(IMG_DIR,directory,images[dupe_idx])
             print(f"uncased duplicate found at {image_path}")
-            # Rename the file with a (d) for duplicate which makes them different
+            #Rename the file with a (d) for duplicate which makes them different
             os.rename(
                 image_path,
                 # Remove .jpg extension and add uncased duplicate identifier
-                image_path[:-3]+"(d).jpg"                
+                image_path[:-4]+f" (d{duplicates_dict[image] if image in duplicates_dict else ''}).jpg"                
             )
+            # Update duplicate dict
+            if image not in duplicates_dict:
+                duplicates_dict[image]=1
+            else:
+                duplicates_dict[image]+=1

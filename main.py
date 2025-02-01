@@ -3,6 +3,7 @@ from WgaTsv import WgaTsv
 from tqdm import tqdm
 from WgaFetcher import WgaFetcher,IMAGE_DIR
 import argparse
+import os
 
 argparser=argparse.ArgumentParser(
             prog='WgaScraper',
@@ -14,8 +15,16 @@ argparser.add_argument('-low_quality',action='store_false',help='Downloads a low
 arggroup=argparser.add_mutually_exclusive_group()
 arggroup.add_argument('-l','--link',type=str,required=False,help='Scrape a singular link from https://www.wga.hu (e.g https://www.wga.hu/html/a/aachen/j_couple.html)')
 arggroup.add_argument('-s','--start',type=int,default=0 ,help='Starts the scraping process at a certain index in the catalog')
+arggroup.add_argument('-d','--directory',type=str,default='./' ,help='Determines what directory to store the files in')
 
 args=argparser.parse_args()
+
+# store the directory
+wga_directory=args.directory
+
+# make directories if arg is supplied
+if wga_directory!="./":
+    os.makedirs(wga_directory,exist_ok=True)
 
 # Initilization of the parser object
 parser=WgaParser('catalog.txt')
@@ -37,7 +46,7 @@ parser.ensureColumnsNotEmpty(
 parser.filterForms(["painting","portrait"])
 
 # Instantiate fetcher
-fetcher=WgaFetcher()
+fetcher=WgaFetcher(wga_directory)
 
 # If a link is passed we are just scraping one
 if args.link:

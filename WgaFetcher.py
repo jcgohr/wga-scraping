@@ -52,11 +52,13 @@ def rename_uncased_duplicates(directory,rename=True)-> dict:
 
 
 class WgaFetcher():
-    def __init__(self) -> None:
+    def __init__(self,directory) -> None:
         # Make image directory
-        if not os.path.exists(IMAGE_DIR):
-            os.mkdir(IMAGE_DIR)
-        self.metadataObject=WgaMetadata(METADATA_PATH)
+        self.directory=directory
+        self.im_dir=os.path.join(directory,IMAGE_DIR)
+        if not os.path.exists(self.im_dir):
+            os.mkdir(self.im_dir)
+        self.metadataObject=WgaMetadata(os.path.join(self.directory,METADATA_PATH))
     
     def requestPage(self,link)->BeautifulSoup:
         response=requests.get(link)
@@ -109,7 +111,7 @@ class WgaFetcher():
         runs fetchImage and extractDescription with a single call
         """
         sanitizedArtworkName=sanitize_filename(artworkName)
-        artistPath=f'{IMAGE_DIR}{sanitize_filename(artistName)}/'
+        artistPath=f'{self.im_dir}{sanitize_filename(artistName)}/'
         # Make artist directory
         if not os.path.exists(artistPath):
             os.mkdir(artistPath)
